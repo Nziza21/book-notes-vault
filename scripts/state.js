@@ -239,3 +239,48 @@ function renderRecords(records) {
   computeStats(records); 
 }
 
+const pageCapInput = document.getElementById('page-cap');
+const capStatusEl = document.getElementById('cap-status');
+
+function updateCapStatus(records) {
+  const totalPages = records.reduce((sum, r) => sum + Number(r.pages), 0);
+  const cap = Number(pageCapInput.value) || 0;
+  const remaining = cap - totalPages;
+
+  if (remaining >= 0) {
+    capStatusEl.textContent = `Remaining: ${remaining} pages`;
+    capStatusEl.setAttribute('aria-live', 'polite');
+  } else {
+    capStatusEl.textContent = `Over limit by ${-remaining} pages!`;
+    capStatusEl.setAttribute('aria-live', 'assertive');
+  }
+}
+
+function renderRecords(records) {
+  tableBody.innerHTML = '';
+  records.forEach(record => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${record.title}</td>
+      <td>${record.author}</td>
+      <td>${record.pages}</td>
+      <td>${record.tag}</td>
+      <td>${record.dateAdded}</td>
+      <td>
+        <button class="edit-btn" data-id="${record.id}">Edit</button>
+        <button class="delete-btn" data-id="${record.id}">Delete</button>
+      </td>
+    `;
+    tableBody.appendChild(tr);
+  });
+
+  computeStats(records); 
+  updateCapStatus(records); 
+}
+
+pageCapInput.addEventListener('input', () => {
+  const records = Array.from(tableBody.querySelectorAll('tr')).map(tr => ({
+    pages: tr.querySelector('td:nth-child(3)').textContent
+  }));
+  updateCapStatus(records);
+});

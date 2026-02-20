@@ -115,3 +115,15 @@ mark {
   padding: 1rem;
   border-radius: 8px;
 }
+
+.cap-target {
+  margin-top: 1rem;
+  background: #eef6ff;
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.cap-target input {
+  width: 6rem;
+  margin-left: 0.5rem;
+}
