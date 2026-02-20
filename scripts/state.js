@@ -96,3 +96,44 @@ function renderRecords(records) {
 }
 
 loadSeed();
+
+const headers = document.querySelectorAll('#records-table th[data-sort]');
+
+headers.forEach(th => {
+  th.addEventListener('click', () => {
+    const key = th.dataset.sort;
+    const rows = Array.from(tableBody.querySelectorAll('tr'));
+
+    const ascending = !th.classList.contains('asc');
+    
+    rows.sort((a, b) => {
+      const aText = a.querySelector(`td:nth-child(${getColumnIndex(key)+1})`).textContent.trim();
+      const bText = b.querySelector(`td:nth-child(${getColumnIndex(key)+1})`).textContent.trim();
+
+      if (key === 'pages') {
+        return ascending ? aText - bText : bText - aText;
+      } else if (key === 'dateAdded') {
+        return ascending ? new Date(aText) - new Date(bText) : new Date(bText) - new Date(aText);
+      } else {
+        return ascending ? aText.localeCompare(bText) : bText.localeCompare(aText);
+      }
+    });
+
+    tableBody.innerHTML = '';
+    rows.forEach(r => tableBody.appendChild(r));
+
+    headers.forEach(h => h.classList.remove('asc', 'desc'));
+    th.classList.add(ascending ? 'asc' : 'desc');
+  });
+});
+
+function getColumnIndex(key) {
+  switch(key) {
+    case 'title': return 0;
+    case 'author': return 1;
+    case 'pages': return 2;
+    case 'tag': return 3;
+    case 'dateAdded': return 4;
+    default: return 0;
+  }
+}

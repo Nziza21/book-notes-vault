@@ -83,3 +83,10 @@ footer {
   background-color: #eee;
   color: #333;
 }
+
+th.asc::after {
+  content: " ▲";
+}
+th.desc::after {
+  content: " ▼";
+}
