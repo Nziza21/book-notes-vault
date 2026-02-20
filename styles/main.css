@@ -135,3 +135,40 @@ mark {
   color: red;
   display: block;
 }
+
+:focus {
+  outline: 3px solid #1e90ff;
+  outline-offset: 2px;
+}
+
+.skip-link {
+  position: absolute;
+  left: -999px;
+  top: -999px;
+  background: #1e90ff;
+  color: white;
+  padding: 0.5rem 1rem;
+  z-index: 100;
+}
+
+.skip-link:focus {
+  left: 10px;
+  top: 10px;
+}
+
+button, input, select {
+  transition: all 0.2s ease-in-out;
+}
+
+table tr:hover {
+  background-color: #f0f8ff;
+}
+
+.stats .stat {
+  background-color: #f0f8ff;
+  color: #000;
+  padding: 1rem;
+  border-radius: 6px;
+  text-align: center;
+  margin-bottom: 1rem;
+}
