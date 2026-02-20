@@ -1,0 +1,22 @@
+[
+  {
+    "id": "book_1",
+    "title": "Clean Code",
+    "author": "Robert Martin",
+    "pages": 464,
+    "tag": "Software Engineering",
+    "dateAdded": "2025-09-25",
+    "createdAt": "2025-09-25T12:30:00Z",
+    "updatedAt": "2025-09-25T12:30:00Z"
+  },
+  {
+    "id": "book_2",
+    "title": "Effective Java",
+    "author": "Joshua Bloch",
+    "pages": 416,
+    "tag": "Programming",
+    "dateAdded": "2025-09-23",
+    "createdAt": "2025-09-23T11:00:00Z",
+    "updatedAt": "2025-09-23T11:00:00Z"
+  }
+]

@@ -63,3 +63,36 @@ form.addEventListener('submit', function(e) {
     form.reset();
   }
 });
+
+const tableBody = document.querySelector('#records-table tbody');
+
+async function loadSeed() {
+  try {
+    const response = await fetch('seed.json');
+    const data = await response.json();
+    renderRecords(data);
+  } catch (err) {
+    console.error('Failed to load seed data', err);
+  }
+}
+
+function renderRecords(records) {
+  tableBody.innerHTML = '';
+  records.forEach(record => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${record.title}</td>
+      <td>${record.author}</td>
+      <td>${record.pages}</td>
+      <td>${record.tag}</td>
+      <td>${record.dateAdded}</td>
+      <td>
+        <button class="edit-btn" data-id="${record.id}">Edit</button>
+        <button class="delete-btn" data-id="${record.id}">Delete</button>
+      </td>
+    `;
+    tableBody.appendChild(tr);
+  });
+}
+
+loadSeed();
