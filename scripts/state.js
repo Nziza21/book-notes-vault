@@ -1,4 +1,6 @@
 import { validateText, validatePages, validateDate, validateTag, validateNoDuplicateWords } from './validators.js';
+import { loadRecords, saveRecords } from './storage.js';
+
 
 const form = document.getElementById('book-form');
 
@@ -59,22 +61,50 @@ form.addEventListener('submit', function(e) {
   }
 
   if (valid) {
-    alert('All fields are valid! (Next step: save record)');
-    form.reset();
-  }
+  const records = loadRecords();
+
+  const newRecord = {
+    id: 'rec_' + Date.now(),
+    title,
+    author,
+    pages: Number(pages),
+    tag,
+    dateAdded,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString()
+  };
+
+  records.push(newRecord);
+
+  saveRecords(records);
+
+  renderRecords(records);
+
+  alert('Book saved!');
+  form.reset();
+}
+
 });
 
 const tableBody = document.querySelector('#records-table tbody');
 
-async function loadSeed() {
-  try {
-    const response = await fetch('seed.json');
-    const data = await response.json();
-    renderRecords(data);
-  } catch (err) {
-    console.error('Failed to load seed data', err);
+async function loadRecordsData() {
+  let records = loadRecords();
+
+  if (records.length === 0) {
+    try {
+      const response = await fetch('seed.json');
+      records = await response.json();
+      saveRecords(records);
+    } catch (err) {
+      console.error('Failed to load seed data', err);
+    }
   }
+
+  renderRecords(records);
 }
+
+loadRecordsData();
 
 function renderRecords(records) {
   tableBody.innerHTML = '';
@@ -283,4 +313,40 @@ pageCapInput.addEventListener('input', () => {
     pages: tr.querySelector('td:nth-child(3)').textContent
   }));
   updateCapStatus(records);
+});
+
+document.getElementById('export-json').addEventListener('click', () => {
+  const records = loadRecords();
+  const blob = new Blob([JSON.stringify(records, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'books.json';
+  a.click();
+
+  URL.revokeObjectURL(url);
+});
+
+document.getElementById('import-json').addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      const imported = JSON.parse(reader.result);
+
+      if (!Array.isArray(imported) || !imported.every(r => r.title && r.author && r.pages && r.tag && r.dateAdded)) {
+        throw new Error('Invalid JSON structure');
+      }
+
+      saveRecords(imported);
+      renderRecords(imported);
+      document.getElementById('import-error').textContent = 'Import successful!';
+    } catch (err) {
+      document.getElementById('import-error').textContent = 'Error: ' + err.message;
+    }
+  };
+  reader.readAsText(file);
 });

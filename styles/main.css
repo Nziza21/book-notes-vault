@@ -127,3 +127,11 @@ mark {
   width: 6rem;
   margin-left: 0.5rem;
 }
+
+#export-json, #import-json {
+  margin: 0.5rem 0;
+}
+#import-error {
+  color: red;
+  display: block;
+}
