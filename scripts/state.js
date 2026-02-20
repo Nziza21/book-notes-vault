@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
   async function loadSeedIfEmpty() {
     if (books.length === 0) {
       try {
-        const res = await fetch('./seed.json');
+        const res = await fetch('../seed.json');
         if (!res.ok) throw new Error();
         books = await res.json();
         saveRecords(books);
@@ -207,7 +207,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function applyTheme(theme){
-      document.body.classList.toggle('dark-theme', theme==='dark');
+      document.body.classList.toggle('dark', theme === 'dark');
       localStorage.setItem('theme', theme);
     }
 
