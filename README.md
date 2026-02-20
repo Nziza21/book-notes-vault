@@ -191,7 +191,6 @@ Fully operable with keyboard only
 
 Semantic landmarks: header, nav, main, section, footer
 
-
 ---
 
 This is **everything in one place**. Copy it, paste it in `README.md`, and it will render perfectly on GitHub:
