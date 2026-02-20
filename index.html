@@ -31,7 +31,26 @@
 
   <section id="dashboard">
     <h2>Dashboard</h2>
-  </section>
+    <div class="stats">
+        <div class="stat">
+            <h3>Total Books</h3>
+            <p id="total-books">0</p>
+        </div>
+        <div class="stat">
+            <h3>Total Pages</h3>
+            <p id="total-pages">0</p>
+        </div>
+        <div class="stat">
+            <h3>Top Tag</h3>
+            <p id="top-tag">-</p>
+        </div>
+    </div>
+
+    <div class="trend">
+        <h3>Last 7 Days</h3>
+        <canvas id="trend-chart" width="400" height="150"></canvas>
+    </div>
+</section>
 
   <section id="records">
     <h2>Records</h2>
@@ -51,7 +70,6 @@
             </tr>
         </thead>
         <tbody>
-    <!-- Records will be rendered here via JS -->
     </tbody>
 </table>
 

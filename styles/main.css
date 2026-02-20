@@ -95,3 +95,23 @@ mark {
   background-color: #fffa65;
   color: #000;
 }
+
+.stats {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 1rem;
+}
+
+.stat {
+  background: #f0f0f0;
+  padding: 1rem;
+  border-radius: 8px;
+  flex: 1;
+  text-align: center;
+}
+
+.trend {
+  background: #f9f9f9;
+  padding: 1rem;
+  border-radius: 8px;
+}

@@ -171,3 +171,71 @@ searchInput.addEventListener('input', () => {
     row.style.display = rowMatch || !pattern ? '' : 'none';
   });
 });
+
+const totalBooksEl = document.getElementById('total-books');
+const totalPagesEl = document.getElementById('total-pages');
+const topTagEl = document.getElementById('top-tag');
+const trendCanvas = document.getElementById('trend-chart');
+const trendCtx = trendCanvas.getContext('2d');
+
+function computeStats(records) {
+
+  totalBooksEl.textContent = records.length;
+
+  const totalPages = records.reduce((sum, r) => sum + Number(r.pages), 0);
+  totalPagesEl.textContent = totalPages;
+
+  const tagCounts = {};
+  records.forEach(r => {
+    tagCounts[r.tag] = (tagCounts[r.tag] || 0) + 1;
+  });
+  let topTag = '-';
+  let maxCount = 0;
+  for (const tag in tagCounts) {
+    if (tagCounts[tag] > maxCount) {
+      topTag = tag;
+      maxCount = tagCounts[tag];
+    }
+  }
+  topTagEl.textContent = topTag;
+
+  const today = new Date();
+  const trendData = Array(7).fill(0);
+  records.forEach(r => {
+    const date = new Date(r.dateAdded);
+    const diffDays = Math.floor((today - date) / (1000*60*60*24));
+    if (diffDays >=0 && diffDays < 7) {
+      trendData[6 - diffDays]++;
+    }
+  });
+
+  trendCtx.clearRect(0,0,trendCanvas.width, trendCanvas.height);
+  const barWidth = trendCanvas.width / 7 - 5;
+  trendData.forEach((val, i) => {
+    trendCtx.fillStyle = '#4caf50';
+    const barHeight = val * 20; 
+    trendCtx.fillRect(i*(barWidth+5), trendCanvas.height-barHeight, barWidth, barHeight);
+  });
+}
+
+function renderRecords(records) {
+  tableBody.innerHTML = '';
+  records.forEach(record => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${record.title}</td>
+      <td>${record.author}</td>
+      <td>${record.pages}</td>
+      <td>${record.tag}</td>
+      <td>${record.dateAdded}</td>
+      <td>
+        <button class="edit-btn" data-id="${record.id}">Edit</button>
+        <button class="delete-btn" data-id="${record.id}">Delete</button>
+      </td>
+    `;
+    tableBody.appendChild(tr);
+  });
+
+  computeStats(records); 
+}
+
