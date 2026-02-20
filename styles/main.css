@@ -90,3 +90,8 @@ th.asc::after {
 th.desc::after {
   content: " ▼";
 }
+
+mark {
+  background-color: #fffa65;
+  color: #000;
+}

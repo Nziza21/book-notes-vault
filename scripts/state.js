@@ -137,3 +137,37 @@ function getColumnIndex(key) {
     default: return 0;
   }
 }
+
+const searchInput = document.getElementById('search-input');
+const searchError = document.getElementById('search-error');
+
+searchInput.addEventListener('input', () => {
+  const pattern = searchInput.value.trim();
+
+  let re = null;
+  try {
+    if (pattern) {
+      re = new RegExp(pattern, 'i');
+    }
+    searchError.textContent = '';
+  } catch (err) {
+    searchError.textContent = 'Invalid regex pattern';
+    return;
+  }
+
+  const rows = Array.from(tableBody.querySelectorAll('tr'));
+  rows.forEach(row => {
+    let rowMatch = false;
+    row.querySelectorAll('td').forEach(td => {
+      const text = td.textContent;
+      if (re && text.match(re)) {
+        td.innerHTML = text.replace(re, m => `<mark>${m}</mark>`);
+        rowMatch = true;
+      } else {
+        td.innerHTML = td.textContent; 
+      }
+    });
+
+    row.style.display = rowMatch || !pattern ? '' : 'none';
+  });
+});
