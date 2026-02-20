@@ -13,5 +13,3 @@ export function loadRecords() {
 export function saveRecords(records) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
 }
-
-

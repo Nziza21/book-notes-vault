@@ -19,6 +19,6 @@ export function validateTag(input) {
 }
 
 export function validateNoDuplicateWords(input) {
-  const re = /\b(\w+)\s+\1\b/;
-  return !re.test(input); 
+  const re = /\b(\w+)\s+\1\b/i;
+  return !re.test(input);
 }
